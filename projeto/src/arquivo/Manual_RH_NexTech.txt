@@ -1,0 +1,33 @@
+# Manual de RH NexTech - Gestão de Pessoas & Inovação
+
+## 1. Bem-vindo à NexTech
+Você agora é parte da NexTech. Nossa missão é acelerar o futuro através de tecnologia de ponta e automação inteligente. Não somos apenas uma loja; somos um hub de inovação.
+
+## 2. Cultura e Valores
+- **Inovação Contínua:** Nunca nos acomodamos. O próximo código, o próximo hardware, a próxima automação é sempre o nosso objetivo.
+- **Liberdade com Responsabilidade:** Acreditamos em um ambiente autônomo. Você tem a liberdade de criar e a responsabilidade de entregar com qualidade.
+- **Contexto, não Controle:** Fornecemos o contexto necessário para que cada colaborador tome as melhores decisões.
+- **Excelência Técnica:** Valorizamos o conhecimento aprofundado, a boa arquitetura de sistemas e a automação de processos.
+
+## 3. Jornada de Trabalho e Flexibilidade
+- A NexTech adota um modelo focado em entregas. A flexibilidade é um pilar, desde que os objetivos sejam atingidos e a comunicação com o time seja mantida.
+- Registro de atividades deve ser feito nos canais oficiais (ferramentas internas de gestão).
+
+## 4. Comunicação Interna
+- Utilizamos ferramentas ágeis de comunicação (Slack/Discord) e gestão de projetos.
+- A comunicação deve ser transparente, direta e pautada na resolução de problemas.
+
+## 5. Desenvolvimento e Aprendizado
+- Incentivamos a cultura de "Tech Sandbox": experimente, erre rápido, aprenda e compartilhe o conhecimento.
+- Programas de atualização constante em IA, automação e novas tecnologias são parte do nosso DNA.
+
+## 6. Benefícios e Bem-estar
+- Focamos em oferecer benefícios que apoiem o desenvolvimento profissional e o equilíbrio pessoal.
+- Nosso ambiente é pensado para manter o foco e estimular a criatividade (Dark Mode Premium e ferramentas de ponta).
+
+## 7. Ética e Segurança
+- A integridade dos dados e o respeito à privacidade dos clientes são inegociáveis.
+- Esperamos de todos os colaboradores uma conduta ética impecável, especialmente ao lidar com tecnologias de automação.
+
+---
+NexTech - Conectando você ao futuro da tecnologia.
