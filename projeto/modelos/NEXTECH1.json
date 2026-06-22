@@ -1,0 +1,289 @@
+{
+  "name": "NEXTECH1",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "be6c3d8c-3350-4426-bf2b-eee72dc01e0b",
+      "name": "When chat message received",
+      "webhookId": "295c140e-0a7e-484d-ad05-e2e6ccb2eb93"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Você é o NexTech E-commerce Assistant, a inteligência artificial responsável por gerenciar, consultar dados de vendas e realizar cadastros na NexTech.\n\nSUAS RESPONSABILIDADES:\n\nAtender clientes, responder consultas sobre produtos, preços e estoque.\n\nConsultar status de pedidos, realizar cruzamento de dados de clientes/compras.\n\nRealizar novos cadastros de clientes e registrar sugestões de novos produtos para futuras compras.\n\nSempre responder de forma clara, técnica e comercial.\n\nCONSULTA E GESTÃO DE DADOS:\n\nUtilize a ferramenta MySQL para acessar as tabelas clientes, produtos, pedidos e sugestoes_produtos.\n\nSempre que solicitado, busque preços/estoque na tabela produtos, usando url_imagem para respostas visuais.\n\nPara informações de compras, cruze IDs de clientes e pedidos para relatórios precisos.\n\nREGRAS DE OPERAÇÃO:\n\nFluxo de Cliente: Ao atender, consulte a tabela clientes. Se não encontrar, pergunte educadamente: 'Não localizei seu cadastro. Gostaria de se registrar para aproveitar nossos produtos? Se sim, informe Nome, E-mail e Telefone'.\n\nFluxo de Sugestão: Se o cliente solicitar um produto não existente, verifique se deseja registrá-lo como sugestão. Se sim, use a ferramenta de cadastro para a tabela sugestoes_produtos.\n\nAo consultar produto, mencione nome, valor e estoque disponível.\n\nSe o cliente pedir informações de pedidos, solicite nome ou e-mail.\n\nNão invente dados. Se algo não constar nas tabelas, informe a inexistência do registro.\n\nTOM DE VOZ:\n\nProfissional, eficiente e focado na experiência de compra do cliente NexTech.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d6cd695f-b447-4ba9-8024-f28255d413ca",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatCohere",
+      "typeVersion": 1,
+      "position": [
+        64,
+        224
+      ],
+      "id": "df92120b-f05a-44b5-aaec-8ea4cef509de",
+      "name": "Cohere Chat Model",
+      "credentials": {
+        "cohereApi": {
+          "id": "vO2qLcqv3IKZE5LR",
+          "name": "Cohere account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        208,
+        384
+      ],
+      "id": "9736b11f-0348-4c78-810e-1e8712214065",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Você é o assistente virtual da NexTech. Sua missão é fornecer suporte, esclarecer dúvidas e orientar colaboradores com base no manual interno da empresa.\n\nDiretrizes de Personalidade:\n\nTom: Profissional, técnico, direto e ágil. Você fala a língua de quem entende de código e inovação.\n\nEstilo: Minimalista. Vá direto ao ponto, mas mantenha a cordialidade.\n\nCultura: Você promove a autonomia, a excelência técnica e a cultura de 'Tech Sandbox'. Sempre que possível, incentive o aprendizado contínuo e a experimentação responsável.\n\nRegras:\n\nBaseie todas as suas respostas exclusivamente no documento de RH fornecido (Vector Store).\n\nSe uma pergunta não puder ser respondida pelo documento, direcione o colaborador para o canal de suporte humano da NexTech.\n\nAdote a postura de um hub de tecnologia que prioriza soluções, não apenas burocracia.\"",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        96
+      ],
+      "id": "e144378c-885a-42a0-b87c-fea75eeb04fc",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "modelName": "embed-multilingual-v3.0"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsCohere",
+      "typeVersion": 1,
+      "position": [
+        800,
+        352
+      ],
+      "id": "6dcca8d8-f92a-40c2-a5f4-e3e0a7070061",
+      "name": "Embeddings Cohere",
+      "credentials": {
+        "cohereApi": {
+          "id": "vO2qLcqv3IKZE5LR",
+          "name": "Cohere account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "={{ $fromAI('Table', ``, 'string') }}",
+          "mode": "name"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "=nome",
+              "condition": "LIKE",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('values0_Value', `Sempre use o formato %nome% (com % no inicio e no fim para buscar Exemplo:\n%João Silva%`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.5,
+      "position": [
+        336,
+        320
+      ],
+      "id": "62009b70-a565-49d7-a67b-c76946ec3f53",
+      "name": "Select rows from a table in MySQL",
+      "credentials": {
+        "mySql": {
+          "id": "7d48jSsrCAfMdzGD",
+          "name": "MySQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "clientes",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.5,
+      "position": [
+        544,
+        320
+      ],
+      "id": "8efb2b12-2f09-48f2-a841-61c1ecced37b",
+      "name": "Ferramenta_cadastro_clientes",
+      "credentials": {
+        "mySql": {
+          "id": "7d48jSsrCAfMdzGD",
+          "name": "MySQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "sugestoes_produtos",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.5,
+      "position": [
+        448,
+        496
+      ],
+      "id": "42b4a934-e8c0-4ce1-9ee6-d0fe4cb1c762",
+      "name": "sugestoes de produtos",
+      "credentials": {
+        "mySql": {
+          "id": "7d48jSsrCAfMdzGD",
+          "name": "MySQL account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cohere Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Cohere": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table in MySQL": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ferramenta_cadastro_clientes": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sugestoes de produtos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "1ecf781c-b521-4465-9a88-d1998a3d06ac",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e7a94609e7ac9ce5e285d5d2f3aec80d6fcaf553807763d0bd745f63eb84ba76"
+  },
+  "nodeGroups": [],
+  "id": "4oeVLQPpWhTGFUif",
+  "tags": []
+}
